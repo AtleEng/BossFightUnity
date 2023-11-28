@@ -18,9 +18,6 @@ public class WeaponBase : MonoBehaviour
     [Range(0, 180)]
     [SerializeField] float bulletSpread = 0;
 
-    [SerializeField] float burstSpeed = 0;
-    float _burstSpeed;
-
     [Header("Bullet stats")]
     [SerializeField] float bulletSpeed = 3;
 
@@ -28,12 +25,19 @@ public class WeaponBase : MonoBehaviour
 
     [SerializeField] int dmg = 1;
 
-    [SerializeField] int canPirceAmount = 0;
+    [SerializeField] int canPeirceAmount = 0;
     #endregion
 
     [Header("Effects")]
     //[SerializeField] AudioSource gunSound;
     [SerializeField] Recoil recoil;
+    [SerializeField] ParticleSystem muzzleFlash;
+
+    Camera cam;
+    void Start()
+    {
+        cam = Camera.main;
+    }
     void Update()
     {
         RotateGun();
@@ -57,7 +61,7 @@ public class WeaponBase : MonoBehaviour
     }
     void RotateGun()
     {
-        Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+        Vector2 direction = cam.ScreenToWorldPoint(Input.mousePosition) - transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
@@ -66,20 +70,18 @@ public class WeaponBase : MonoBehaviour
     void Shoot()
     {
         recoil.AddRecoil();
+        muzzleFlash.Play();
         //gunSound.Play();
+
+
         SpawBullet();
     }
     void SpawBullet()
     {
         firePoint.Rotate(0, 0, Random.Range(-bulletSpread, bulletSpread));
         GameObject bulletClone = Instantiate(projectile, firePoint.position, firePoint.rotation);
-        bulletClone.GetComponent<Bullet>().SetStats(bulletSpeed, lifeTime, dmg, canPirceAmount);
+        bulletClone.GetComponent<Bullet>().SetStats(bulletSpeed, lifeTime, dmg, canPeirceAmount);
 
         firePoint.rotation = transform.rotation;
     }
-}
-
-public interface IWeaponType
-{
-    void Attack(Vector3 shootingDir);
 }

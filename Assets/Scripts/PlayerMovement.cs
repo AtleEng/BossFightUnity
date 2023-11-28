@@ -50,11 +50,15 @@ public class PlayerMovement : MonoBehaviour
     [Header("Animation")]
     private Animator anim;
     [SerializeField] private bool animationsActive;
+
+    Camera cam;
     #endregion
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+
+        cam = Camera.main;
 
         footEmission = footSteps.emission;
     }
@@ -134,13 +138,14 @@ public class PlayerMovement : MonoBehaviour
     }
     void Flip()
     {
-        if (_moveInput > 0)
+        Vector2 v = cam.ScreenToWorldPoint(Input.mousePosition);
+        if (v.x > 0)
         {
-            transform.eulerAngles = new Vector3(0, 0, 0);
+            transform.localScale = new Vector3(-1, 1);
         }
-        else if (_moveInput < 0)
+        else if (v.x < 0)
         {
-            transform.eulerAngles = new Vector3(0, 180, 0);
+            transform.localScale = new Vector3(1, 1);
         }
     }
     void Jump()
