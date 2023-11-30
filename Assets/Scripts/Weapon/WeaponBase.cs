@@ -64,10 +64,15 @@ public class WeaponBase : MonoBehaviour
         muzzleFlash.Play();
         //gunSound.Play();
 
-        SpawBullet();
+        for (int i = 0; i < amountOfBullets; i++)
+        {
+            SpawBullet();
+        }
     }
     void SpawBullet()
     {
+        print("Bullet");
+        
         firePoint.Rotate(0, 0, Random.Range(-bulletSpread, bulletSpread));
         GameObject bulletClone = Instantiate(projectile, firePoint.position, firePoint.rotation);
         bulletClone.GetComponent<Bullet>().SetStats(transform.parent.transform.parent.gameObject, bulletSpeed, lifeTime, dmg, canPeirceAmount);

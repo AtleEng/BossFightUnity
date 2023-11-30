@@ -11,6 +11,8 @@ public class Bullet : MonoBehaviour
     int _dmg;
     int _canPeirceAmount;
 
+    [SerializeField] ParticleSystem hitEffect;
+
     // Update is called once per frame
     void Update()
     {
@@ -36,7 +38,7 @@ public class Bullet : MonoBehaviour
             entity.TakeDamage(_dmg);
 
             _canPeirceAmount--;
-            if (_canPeirceAmount <= 0)
+            if (_canPeirceAmount < 0)
             {
                 DestroyProjectile();
             }
@@ -48,6 +50,7 @@ public class Bullet : MonoBehaviour
     }
     void DestroyProjectile()
     {
+        Instantiate(hitEffect, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 }
