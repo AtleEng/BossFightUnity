@@ -18,6 +18,6 @@ public class Character : MonoBehaviour, IDamageable
     public void Die()
     {
         print(gameObject.name + " has died");
-        Destroy(this);
+        Destroy(gameObject);
     }
 }

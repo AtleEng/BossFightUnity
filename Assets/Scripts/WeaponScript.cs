@@ -66,20 +66,11 @@ public class WeaponScript : MonoBehaviour
             _timeBtwShoots = timeBtwShoots;
         }
     }
-    IEnumerator Spawn()
-    {
-        for (int i = 0; i < amountOfBullets; i++)
-        {
-            yield return new WaitForSeconds(burstSpeed);
-            //Do stuff
-            SpawBullet();
-        }
-    }
     void SpawBullet()
     {
         firePoint.Rotate(0, 0, Random.Range(-bulletSpread, bulletSpread));
         GameObject bulletClone = Instantiate(projectile, firePoint.position, firePoint.rotation);
-        bulletClone.GetComponent<Bullet>().SetStats(bulletSpeed, lifeTime, dmg, canPirceAmount);
+        bulletClone.GetComponent<Bullet>().SetStats(gameObject, bulletSpeed, lifeTime, dmg, canPirceAmount);
 
         firePoint.rotation = transform.rotation;
     }

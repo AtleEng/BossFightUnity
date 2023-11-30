@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    GameObject _owner;
     float _bulletSpeed;
     float _lifeTime;
     int _dmg;
@@ -15,8 +16,9 @@ public class Bullet : MonoBehaviour
     {
         transform.Translate(Vector2.right * _bulletSpeed * Time.deltaTime);
     }
-    public void SetStats(float bulletSpeed, float lifeTime, int dmg, int canPeirceAmount)
+    public void SetStats(GameObject owner, float bulletSpeed, float lifeTime, int dmg, int canPeirceAmount)
     {
+        _owner = owner;
         _bulletSpeed = bulletSpeed;
         _lifeTime = lifeTime;
         _dmg = dmg;
@@ -26,6 +28,8 @@ public class Bullet : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.gameObject == _owner) { return; }
+
         IDamageable entity = other.gameObject.GetComponent<IDamageable>();
         if (entity != null)
         {

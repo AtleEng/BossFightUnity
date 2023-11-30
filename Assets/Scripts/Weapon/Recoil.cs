@@ -4,32 +4,26 @@ using UnityEngine;
 
 public class Recoil : MonoBehaviour
 {
-    Vector3 currentRot, currentPos, targetRot, targetPos, gunStartPos;
-    Transform camTransform;
+    Vector3 currentPos, targetPos;
 
-    public float snappiness, returnAmount, recoil;
-    void Start()
-    {
-        gunStartPos = transform.localPosition;
-        camTransform = Camera.main.transform;
-    }
+    [SerializeField]
+    float snappiness, returnAmount, recoil;
+
     void Update()
     {
-        targetRot = Vector3.Lerp(targetRot, Vector3.zero, Time.deltaTime * returnAmount);
-        currentRot = Vector3.Slerp(currentRot, targetRot, Time.fixedDeltaTime * snappiness);
-
-        transform.localRotation = Quaternion.Euler(currentRot);
-        camTransform.localRotation = Quaternion.Euler(currentRot);
-
         Kickback();
     }
     public void AddRecoil()
     {
-        targetPos -= transform.right * recoil;
+        // Calculate the recoil vector in local space
+        Vector3 localRecoil = Quaternion.Inverse(transform.parent.rotation) * (-transform.parent.right * recoil);
+
+        // Apply recoil in local space
+        targetPos += localRecoil;
     }
     void Kickback()
     {
-        targetPos = Vector3.Lerp(targetPos, gunStartPos, Time.deltaTime * returnAmount);
+        targetPos = Vector3.Lerp(targetPos, Vector3.zero, Time.deltaTime * returnAmount);
         currentPos = Vector3.Lerp(currentPos, targetPos, Time.fixedDeltaTime * snappiness);
         transform.localPosition = currentPos;
     }

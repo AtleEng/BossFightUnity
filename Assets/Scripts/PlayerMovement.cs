@@ -37,6 +37,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float maxVelocityY = 10;
     private Rigidbody2D rb;
 
+    [SerializeField] Transform weaponHand;
+
     [Header("Particels")]
     [SerializeField] private bool spawnDust;
 
@@ -66,11 +68,12 @@ public class PlayerMovement : MonoBehaviour
     {
         Inputs();
         CheckWorld();
-
+        RotateHand();
+        Flip();
         if (animationsActive)
         {
             AnimationControl();
-            Flip();
+
         }
     }
     private void FixedUpdate()
@@ -136,16 +139,28 @@ public class PlayerMovement : MonoBehaviour
     {
         rb.velocity = new Vector2(_moveInput * moveSpeed, rb.velocity.y);
     }
+    void RotateHand()
+    {
+        Vector2 direction = cam.ScreenToWorldPoint(Input.mousePosition) - weaponHand.transform.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        //omvandlar en vinkel till rotation
+        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        //sätter rotationen på vapnet
+        weaponHand.rotation = rotation;
+    }
     void Flip()
     {
-        Vector2 v = cam.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 v = cam.ScreenToWorldPoint(Input.mousePosition) - transform.position;
         if (v.x > 0)
         {
-            transform.localScale = new Vector3(-1, 1);
+            transform.localScale = new Vector3(1f, 1f, 1f);
+            weaponHand.localScale = new Vector3(1f, 1f, 1f);
         }
         else if (v.x < 0)
         {
-            transform.localScale = new Vector3(1, 1);
+            transform.localScale = new Vector3(-1f, 1f, 1f);
+            weaponHand.localScale = new Vector3(-1f, -1f, 1f);
         }
     }
     void Jump()

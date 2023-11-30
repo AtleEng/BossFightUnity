@@ -40,8 +40,6 @@ public class WeaponBase : MonoBehaviour
     }
     void Update()
     {
-        RotateGun();
-
         timeBetweenShoots += Time.deltaTime;
 
         if (timeBetweenShoots >= fireRate)
@@ -59,20 +57,12 @@ public class WeaponBase : MonoBehaviour
             }
         }
     }
-    void RotateGun()
-    {
-        Vector2 direction = cam.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
-        transform.rotation = rotation;
-    }
     void Shoot()
     {
         recoil.AddRecoil();
         muzzleFlash.Play();
         //gunSound.Play();
-
 
         SpawBullet();
     }
@@ -80,7 +70,7 @@ public class WeaponBase : MonoBehaviour
     {
         firePoint.Rotate(0, 0, Random.Range(-bulletSpread, bulletSpread));
         GameObject bulletClone = Instantiate(projectile, firePoint.position, firePoint.rotation);
-        bulletClone.GetComponent<Bullet>().SetStats(bulletSpeed, lifeTime, dmg, canPeirceAmount);
+        bulletClone.GetComponent<Bullet>().SetStats(transform.parent.transform.parent.gameObject, bulletSpeed, lifeTime, dmg, canPeirceAmount);
 
         firePoint.rotation = transform.rotation;
     }
