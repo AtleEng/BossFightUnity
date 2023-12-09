@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 1891198449
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1746964401, guid: 59cfe66fb32c8a149847b327d3551fb0, type: 3}
+  m_Sprite: {fileID: 155147100, guid: 59cfe66fb32c8a149847b327d3551fb0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -134,7 +134,7 @@ MonoBehaviour:
   projectile: {fileID: 7742104004782542549, guid: 203670d16cc2d7a419b6f717b9d5699f, type: 3}
   firePoint: {fileID: 5309103099387546357}
   fireRate: 0.2
-  isWeaponAutomatic: 0
+  isWeaponAutomatic: 1
   amountOfBullets: 1
   bulletSpread: 2
   bulletSpeed: 30
@@ -5052,7 +5052,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8117090263602253803}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.57, y: 0.3, z: 0}
+  m_LocalPosition: {x: 0.57, y: 0.118, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
