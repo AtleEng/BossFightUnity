@@ -39,19 +39,8 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] Transform weaponHand;
 
-    [Header("Particels")]
-    [SerializeField] private bool spawnDust;
-
-    private bool _spawnJumpingDust;
-    [SerializeField] private GameObject jumpingParticels;
-
-    [SerializeField] private ParticleSystem footSteps;
-    [SerializeField] private float footStepsSpeed;
-    private ParticleSystem.EmissionModule footEmission;
-
     [Header("Animation")]
     private Animator anim;
-    [SerializeField] private bool animationsActive;
 
     Camera cam;
     #endregion
@@ -61,8 +50,6 @@ public class PlayerMovement : MonoBehaviour
         anim = GetComponent<Animator>();
 
         cam = Camera.main;
-
-        footEmission = footSteps.emission;
     }
     private void Update()
     {
@@ -70,11 +57,10 @@ public class PlayerMovement : MonoBehaviour
         CheckWorld();
         RotateHand();
         Flip();
-        if (animationsActive)
-        {
-            AnimationControl();
 
-        }
+        anim.SetFloat("FallSpeed", rb.velocity.y);
+        anim.SetFloat("MoveSpeed", Math.Abs(rb.velocity.x));
+        anim.SetBool("isGrounded", isGrounded);
     }
     private void FixedUpdate()
     {
@@ -168,51 +154,6 @@ public class PlayerMovement : MonoBehaviour
         if (isJumping)
         {
             rb.velocity = Vector2.up * jumpForce;
-        }
-    }
-    void AnimationControl()
-    {
-        if (isGrounded == false)
-        {
-            anim.SetBool("isJumping", true);
-        }
-        else
-        {
-            anim.SetBool("isJumping", false);
-        }
-
-        if (isJumping == true)
-        {
-            anim.SetBool("takeOff", true);
-        }
-        else
-        {
-            anim.SetBool("takeOff", false);
-        }
-
-        if (_moveInput == 0)
-        {
-            anim.SetBool("isRunning", false);
-        }
-        else
-        {
-            anim.SetBool("isRunning", true);
-        }
-    }
-    void Particles()
-    {
-        if (_moveInput != 0 && isGrounded)
-        {
-            footEmission.rateOverTime = footStepsSpeed;
-        }
-        else
-        {
-            footEmission.rateOverTime = 0;
-        }
-
-        if (_jumpBufferLength >= 0 && _hangTime > 0)
-        {
-            Instantiate(jumpingParticels, feetPos.position, feetPos.rotation);
         }
     }
     private void OnDrawGizmosSelected()
